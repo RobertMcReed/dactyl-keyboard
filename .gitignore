@@ -17,3 +17,5 @@ debug_*
 things/*.scad
 things/*.step
 things/*.stl
+render
+render/*
