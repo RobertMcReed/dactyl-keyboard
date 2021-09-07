@@ -5,6 +5,9 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
+
+RUN micromamba install -y -n base -c conda-forge pythonocc-core=7.5.1
+
 RUN micromamba install -y -n base -c conda-forge -c cadquery \
     python=3 \
     cadquery=master \
