@@ -5,6 +5,8 @@ import getopt, sys
 import json
 import os
 
+from hashish import dict_hash
+
 from scipy.spatial import ConvexHull as sphull
 
 def deg2rad(degrees: float) -> float:
@@ -51,11 +53,20 @@ except Exception:
     print('Setting Current Engine = {}'.format(ENGINE))
 
 if save_dir in ['', None, '.']:
-    save_path = path.join(r"..", "things")
+    save_path = path.join(r"..", "things", config_name, dict_hash(data))
     parts_path = path.join(r"..", "src", "parts")
 else:
     save_path = path.join(r"..", "things", save_dir)
     parts_path = path.join(r"..", r"..", "src", "parts")
+
+# save_path = path.join("..", "things", save_dir)
+
+# Ensure save directory exists
+os.makedirs(save_path, exist_ok=True)
+
+# copy config to save directory
+with open(os.path.join(save_path, 'config.json'), 'w') as f:
+    f.write(json.dumps(data, indent=4))
 
 ###############################################
 # END EXTREMELY UGLY BOOTSTRAP
@@ -159,9 +170,7 @@ teensy_holder_width = 7 + teensy_pcb_thickness
 teensy_holder_height = 6 + teensy_width
 
 
-# save_path = path.join("..", "things", save_dir)
-if not path.isdir(save_path):
-    os.mkdir(save_path)
+
 
 
 def column_offset(column: int) -> list:
